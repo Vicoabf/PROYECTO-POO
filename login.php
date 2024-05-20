@@ -8,16 +8,16 @@ header('Allow: GET, POST, OPTIONS, PUT, DELETE');
 include 'conexion.php';
 $pdo = new Conexion();
 
-if (isset($_REQUEST['Usuario']) && isset($_REQUEST['Password'])) {
+if (isset($_REQUEST['nombre']) && isset($_REQUEST['contrasena'])) {
 
-    $Usuario = $_REQUEST['Usuario'];
-    $Password = $_REQUEST['Password'];
+    $Usuario = $_REQUEST['nombre'];
+    $Password = $_REQUEST['contrasena'];
 
     // Consulta preparada con PDO
-    $Query = "SELECT Usuario, Rol FROM login WHERE Usuario = :usuario AND Password = :password";
+    $Query = "SELECT nombre FROM login WHERE nombre = :nombre AND contrasena = :contrasena";
     $statement = $pdo->prepare($Query);
-    $statement->bindParam(':usuario', $Usuario);
-    $statement->bindParam(':password', $Password);
+    $statement->bindParam(':nombre', $Usuario);
+    $statement->bindParam(':contrasena', $Password);
 
     $arreglo = array();
     if ($statement->execute()) {
