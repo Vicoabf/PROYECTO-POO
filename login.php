@@ -14,24 +14,21 @@ if (isset($_REQUEST['nombre']) && isset($_REQUEST['contrasena'])) {
     $Password = $_REQUEST['contrasena'];
 
     // Consulta preparada con PDO
-    $Query = "SELECT nombre FROM login WHERE nombre = :nombre AND contrasena = :contrasena";
+    $Query = "SELECT * FROM login WHERE nombre = :nombre AND contrasena = :contrasena";
     $statement = $pdo->prepare($Query);
     $statement->bindParam(':nombre', $Usuario);
     $statement->bindParam(':contrasena', $Password);
 
-    $arreglo = array();
     if ($statement->execute()) {
-        while ($recibido = $statement->fetch(PDO::FETCH_ASSOC)) {
-            array_push($arreglo, $recibido);
-        }
+        $resultados = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        if (empty($arreglo)) {
+        if (empty($resultados)) {
             // El usuario no existe o las credenciales son incorrectas
             $error_response = array('error' => 'El usuario no existe o las credenciales son incorrectas');
             echo json_encode($error_response); // Responder con el mensaje de error
         } else {
             // Convertir resultado a JSON y enviarlo
-            echo json_encode($arreglo);
+            echo json_encode($resultados);
         }
     } else {
         // Error en la ejecución de la consulta
