@@ -8,6 +8,8 @@ header('Allow: GET, POST, OPTIONS, PUT, DELETE');
 include 'conexion.php';
 $pdo = new Conexion();
 
+$response = array('success' => false); // Respuesta inicial con success=false
+
 if (isset($_REQUEST['nombre']) && isset($_REQUEST['contrasena'])) {
 
     $Usuario = $_REQUEST['nombre'];
@@ -22,25 +24,25 @@ if (isset($_REQUEST['nombre']) && isset($_REQUEST['contrasena'])) {
     if ($statement->execute()) {
         $resultados = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        if (empty($resultados)) {
-            // El usuario no existe o las credenciales son incorrectas
-            $error_response = array('error' => 'El usuario no existe o las credenciales son incorrectas');
-            echo json_encode($error_response); // Responder con el mensaje de error
+        if (!empty($resultados)) {
+            // Si el usuario existe, la autenticación es exitosa
+            $response['success'] = true;
+            $response['user'] = $resultados[0]; // Enviar detalles del usuario si es necesario
         } else {
-            // Convertir resultado a JSON y enviarlo
-            echo json_encode($resultados);
+            // El usuario no existe o las credenciales son incorrectas
+            $response['error'] = 'El usuario no existe o las credenciales son incorrectas';
         }
     } else {
         // Error en la ejecución de la consulta
-        $error_response = array('error' => 'Error en la ejecución de la consulta');
-        echo json_encode($error_response); // Responder con el mensaje de error
+        $response['error'] = 'Error en la ejecución de la consulta';
     }
 
     // Cerrar la conexión PDO
     $pdo = null;
 } else {
     // No se proporcionaron todas las credenciales requeridas
-    $error_response = array('error' => 'Por favor, proporcione usuario y contraseña');
-    echo json_encode($error_response); // Responder con el mensaje de error
+    $response['error'] = 'Por favor, proporcione usuario y contraseña';
 }
+
+echo json_encode($response);
 ?>
