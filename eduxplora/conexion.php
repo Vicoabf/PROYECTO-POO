@@ -3,15 +3,15 @@ class Conexion extends PDO
 {
     public function __construct() {
         try {
-            $servername = "ik1eybdutgxsm0lo.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306";
-            $username = "phjv45gyp00fghb1";
-            $password = "ea0avbx5kpdaoinq";
-            $dbname = "sr21h2lik4divmd3";
+            $servername = "us-cluster-east-01.k8s.cleardb.net";
+            $username = "bef4d69a09d699";
+            $password = "8966a326";
+            $dbname = "heroku_02f8d5d2c5932d";
 
             // Llama al constructor de la clase base PDO (padre) para establecer la conexión
             parent::__construct("mysql:host=$servername;dbname=$dbname", $username, $password);
             $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            //echo "Conexión exitosa";
+            echo "Conexión exitosa";
         } catch (PDOException $e) {
             die("Error de conexión: " . $e->getMessage());
         }
@@ -22,3 +22,10 @@ class Conexion extends PDO
 $pdo = new Conexion();
 return $pdo; // Retorna la instancia de la conexión PDO
 ?>
+
+mysql://bef4d69a09d699:8966a326@us-cluster-east-01.k8s.cleardb.net/heroku_02f8d5d2c5932d6?reconnect=true
+
+username: bef4d69a09d699
+password: 8966a326
+host: us-cluster-east-01.k8s.cleardb.net
+dbname: heroku_02f8d5d2c5932d
