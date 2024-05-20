@@ -11,7 +11,7 @@ class Conexion extends PDO
             // Llama al constructor de la clase base PDO (padre) para establecer la conexión
             parent::__construct("mysql:host=$servername;dbname=$dbname", $username, $password);
             $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo "Conexión exitosa";
+            echo "Conexión exitosa claro que si";
         } catch (PDOException $e) {
             die("Error de conexión: " . $e->getMessage());
         }
